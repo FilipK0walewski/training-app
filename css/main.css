@@ -1,0 +1,276 @@
+:root {
+    /* Background */
+    --bg-color: #121212;
+    /* Dark background for the page */
+
+    /* Text Colors */
+    --primary-text: #E0E0E0;
+    /* Light gray text for high contrast */
+    --secondary-text: #A0A0A0;
+    /* Lighter gray for secondary text */
+
+    /* Teal color shades for design accents */
+    --teal-base: #008080;
+    /* Base teal color */
+    --teal-light: #66B2B2;
+    /* Lighter teal for subtle accents */
+    --teal-dark: #006666;
+    /* Darker teal for buttons, hover states, etc. */
+
+    /* Link and Button Colors */
+    --link-color: var(--teal-base);
+    /* Teal for links */
+    --link-hover: var(--teal-light);
+    /* Lighter teal on hover */
+    --button-bg: var(--teal-base);
+    /* Teal background for buttons */
+    --button-hover: var(--teal-light);
+    /* Lighter teal for button hover */
+
+    /* Highlight Color */
+    --highlight-color: #FF7043;
+    /* Warm accent color (soft orange) for highlights */
+
+    /* Borders and Dividers */
+    --border-color: #333333;
+    /* Dark border for better visibility */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--primary-text);
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height: 100vh;
+    padding: 2rem;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--primary-text);
+}
+
+p {
+    color: var(--secondary-text);
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+.highlight {
+    color: var(--highlight-color);
+}
+
+hr {
+    border: 1px solid var(--border-color);
+    margin: 20px 0;
+}
+
+/* Wrapper for input */
+.input-wrapper {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+.input-wrapper>*+* {
+    margin-top: 1rem;
+}
+
+
+.btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: 2px solid var(--teal-base);
+    background-color: var(--bg-color);
+    color: var(--teal-base);
+    border-radius: 8px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 128, 128, 0.1);
+}
+
+/* Hover Effect - Lighter teal for button */
+.btn:hover {
+    background-color: var(--teal-light);
+    color: var(--bg-color);
+    border-color: var(--teal-light);
+}
+
+/* Focus Effect */
+.btn:focus {
+    box-shadow: 0 0 8px rgba(0, 128, 128, 0.3);
+    /* Soft teal shadow */
+    border-color: var(--teal-base);
+}
+
+/* Active State - Darker teal when pressed */
+.btn:active {
+    background-color: var(--teal-dark);
+    color: var(--bg-color);
+    border-color: var(--teal-dark);
+}
+
+/* Wrapper for centering button */
+.button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* Styling the input field */
+.input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    background-color: var(--bg-color);
+    color: var(--primary-text);
+    transition: all 0.3s ease;
+}
+
+/* Remove the number input arrows (spinners) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    /* Firefox */
+    appearance: none;
+    /* Standard */
+}
+
+
+/* Focus state - Teal border and shadow */
+.input:focus {
+    border-color: var(--teal-base);
+    box-shadow: 0 0 8px rgba(0, 128, 128, 0.3);
+    /* Soft teal shadow */
+}
+
+/* Placeholder color */
+.input::placeholder {
+    color: var(--secondary-text);
+    font-style: italic;
+}
+
+/* Hover effect */
+.input:hover {
+    border-color: var(--teal-light);
+}
+
+/* Focus state - Placeholder becomes transparent */
+.input:focus::placeholder {
+    color: transparent;
+}
+
+/* Focused input text color */
+.input:focus {
+    color: var(--primary-text);
+}
+
+.hidden {
+    display: none !important;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-col>*+* {
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    color: var(--primary-text);
+}
+
+th {
+    background-color: var(--teal-dark);
+    font-weight: bold;
+}
+
+td {
+    background-color: #232323;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Hover Effect for Rows */
+tr:hover {
+    background-color: var(--teal-light);
+    cursor: pointer;
+}
+
+/* Alternate Row Color */
+tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+tr:nth-child(odd) {
+    background-color: #232323;
+}
+
+/* Styling the Borders */
+table,
+th,
+td {
+    border: 1px solid var(--border-color);
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    th,
+    td {
+        padding: 8px;
+    }
+}
+
+.red {
+    background-color: var(--highlight-color);
+}
