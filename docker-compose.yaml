@@ -1,0 +1,10 @@
+services:
+  web:
+    build:
+      context: .
+    container_name: training-app
+    ports:
+      - "8000:80"
+    volumes:
+      - ./src:/var/www/html
+    restart: always
