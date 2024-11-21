@@ -1,6 +1,27 @@
-import { Workout } from './workout.js'
+import { Workout, Exercise, Set } from './workout.js'
 
-const workout = new Workout()
+let workout = new Workout()
+
+const loadFromLocalStorage = () => {
+    const localWorkout = JSON.parse(localStorage.getItem('workout'))
+
+    const exercises = []
+    localWorkout.exercises.forEach(e => {
+        const sets = []
+        e.sets.forEach(s => {
+            let startedAt = s.startedAt === null ? null : new Date(s.startedAt)
+            let finishedAt = s.finishedAt === null ? null : new Date(s.finishedAt)
+            const set = new Set(startedAt, finishedAt, s.failed)
+            sets.push(set)
+        })
+        const exercise = new Exercise(e.name, e.weight, e.numberOfSets, sets, e.finished, e.failed)
+        exercises.push(exercise)
+    });
+    workout = new Workout(exercises, localWorkout.finished)
+}
+
+loadFromLocalStorage()
+
 const container = document.getElementById('container')
 const counter = document.getElementById('counter')
 const workoutInfo = document.getElementById('workoutInfo')
@@ -89,7 +110,7 @@ const hideWorkoutInfo = () => {
 const addCounter = (text, initValue = 0) => {
     if (counterIntervalId !== null) return
     if (counter.classList.contains('hidden')) counter.classList.remove('hidden')
-    if (counterIntervalId === null) counter.innerHTML = `${text}: 0s`
+    if (counterIntervalId === null) counter.innerHTML = `${text}: ${initValue}s`
 
     let count = initValue
     counterIntervalId = setInterval(() => {
@@ -153,13 +174,15 @@ const finishWorkout = () => {
     console.log('workout end')
 }
 
-let n = 0
+const saveToLocalStorage = () => {
+    localStorage.setItem('workout', JSON.stringify(workout))
+}
+
 const update = () => {
-    n += 1
+    saveToLocalStorage()
     clearContainer()
 
     const currentExercise = workout.getCurrentExercise()
-    if (currentExercise) console.log(n, currentExercise.isLastSetFinished(), currentExercise.isFinished())
     if (currentExercise !== null && currentExercise.isLastSetFinished() === true && currentExercise.isFinished() === false) {
         const p = document.createElement('p')
         p.textContent = 'Last set is finished'

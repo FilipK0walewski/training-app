@@ -1,8 +1,8 @@
 class Set {
-    constructor() {
-        this.startedAt = null
-        this.finishedAt = null
-        this.failed = false
+    constructor(startedAt = null, finishedAt = null, failed = false) {
+        this.startedAt = startedAt
+        this.finishedAt = finishedAt
+        this.failed = failed
     }
 
     getStartTime() {
@@ -55,13 +55,13 @@ class Set {
 }
 
 class Exercise {
-    constructor(name, weight, numberOfSets) {
+    constructor(name, weight, numberOfSets, sets = [], finished = false, failed = false) {
         this.name = name
         this.weight = weight
         this.numberOfSets = numberOfSets
-        this.sets = []
-        this.finished = false
-        this.failed = false
+        this.sets = sets
+        this.finished = finished
+        this.failed = failed
     }
 
     getCurrentSet() {
@@ -167,9 +167,9 @@ class Exercise {
 
 class Workout {
 
-    constructor() {
-        this.exercises = []
-        this.finished = false
+    constructor(exercises = [], finished = false) {
+        this.exercises = exercises
+        this.finished = finished
     }
 
     getCurrentExercise() {
@@ -244,4 +244,4 @@ class Workout {
     }
 }
 
-export { Workout }
+export { Workout, Exercise, Set }
