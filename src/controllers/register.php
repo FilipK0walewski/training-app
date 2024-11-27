@@ -7,28 +7,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
     $confirmedPassword = $_POST['confirmedPassword'];
 
-    $check_username_query = 'SELECT 1 FROM users WHERE username = $1';
-    $check_username_result = pg_query_params($conn, $check_username_query, array($username));
-
-    if (pg_num_rows($check_username_result) > 0) {
-        $errorMessage = "Username \"$username\" already exists. Please choose a different one.";
+    if ($password != $confirmedPassword) {
+        $errorMessage = "Passwords are not the same.";
     } else {
-        $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+        $check_username_query = 'SELECT 1 FROM users WHERE username = $1';
+        $check_username_result = pg_query_params($conn, $check_username_query, array($username));
 
-        $query = 'INSERT INTO users (username, password) VALUES ($1, $2)';
-        $result = pg_query_params($conn, $query, array($username, $hashed_password));
-
-        if ($result) {
-            session_start();
-            $_SESSION['newUser'] = $username;
-            header('Location: /login');
-            exit();
+        if (pg_num_rows($check_username_result) > 0) {
+            $errorMessage = "Username \"$username\" already exists. Please choose a different one.";
         } else {
-            $errorMessage = 'Error: Unable to register the user.';
-        }
-    }
+            $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-    pg_close($conn);
+            $query = 'INSERT INTO users (username, password) VALUES ($1, $2)';
+            $result = pg_query_params($conn, $query, array($username, $hashed_password));
+
+            if ($result) {
+                session_start();
+                $_SESSION['newUser'] = $username;
+                header('Location: /login');
+                exit();
+            } else {
+                $errorMessage = 'Error: Unable to register the user.';
+            }
+        }
+        pg_close($conn);
+}
+
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_SESSION['userId'])) {
+    header('Location: /profile');
 }
 
 $pageTitle = 'Register';

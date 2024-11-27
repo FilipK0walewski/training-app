@@ -2,25 +2,25 @@
 
 <?php
 if (isset($errorMessage)) {
-    echo "<p>$errorMessage</p>";
+    echo "<p class=\"error-message\">$errorMessage</p>";
 }
 ?>
 
-<form action="/register" method="POST">
-    <div>
+<form action="/register" method="POST" class="flex-col">
+    <div class="input-container">
+    <input id="username" name="username" type="text" placeholder="" required>
         <label for="username">username</label>
-        <input id="username" name="username" type="text" required>
     </div>
 
-    <div>
+    <div class="input-container">
+        <input id="password" name="password" type="password" placeholder="" required>
         <label for="password">password</label>
-        <input id="password" name="password" type="password" required>
     </div>
 
-    <div>
+    <div class="input-container">
+        <input id="confirmedPassword" name="confirmedPassword" type="password" placeholder="" required>
         <label for="confirmedPassword">confirm password</label>
-        <input id="confirmedPassword" name="confirmedPassword" type="password" required>
     </div>
 
-    <button type="submit">Create account</button>
+    <button type="submit" class="btn-0">Create account</button>
 </form>

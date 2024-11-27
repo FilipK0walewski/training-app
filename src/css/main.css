@@ -1,4 +1,5 @@
 :root {
+    font-size: 20px;
     /* Background */
     --bg-color: #121212;
     /* Dark background for the page */
@@ -22,7 +23,7 @@
     /* Teal for links */
     --link-hover: var(--teal-light);
     /* Lighter teal on hover */
-    --button-bg: var(--teal-base);
+    --button-bg: var(#333333);
     /* Teal background for buttons */
     --button-hover: var(--teal-light);
     /* Lighter teal for button hover */
@@ -34,12 +35,21 @@
     /* Borders and Dividers */
     --border-color: #333333;
     /* Dark border for better visibility */
+
+    --error-color: #FF4C4C; /* Soft red for errors */
+    --error-light: #FF7A7A; /* Lighter red for subtle hover states */
+    --error-dark: #CC3B3B; /* Darker red for emphasis */
+    --error-text-color: #E0E0E0; /* Light gray for error message text */
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+html {
+    font-size: 20px;
 }
 
 body {
@@ -86,117 +96,6 @@ hr {
     margin: 20px 0;
 }
 
-/* Wrapper for input */
-.input-wrapper {
-    width: 100%;
-    max-width: 400px;
-    padding: 20px;
-}
-
-.input-wrapper>*+* {
-    margin-top: 1rem;
-}
-
-
-.btn {
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: 600;
-    text-transform: uppercase;
-    border: 2px solid var(--teal-base);
-    background-color: var(--bg-color);
-    color: var(--teal-base);
-    border-radius: 8px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 128, 128, 0.1);
-}
-
-/* Hover Effect - Lighter teal for button */
-.btn:hover {
-    background-color: var(--teal-light);
-    color: var(--bg-color);
-    border-color: var(--teal-light);
-}
-
-/* Focus Effect */
-.btn:focus {
-    box-shadow: 0 0 8px rgba(0, 128, 128, 0.3);
-    /* Soft teal shadow */
-    border-color: var(--teal-base);
-}
-
-/* Active State - Darker teal when pressed */
-.btn:active {
-    background-color: var(--teal-dark);
-    color: var(--bg-color);
-    border-color: var(--teal-dark);
-}
-
-/* Wrapper for centering button */
-.button-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 1rem;
-}
-
-/* Styling the input field */
-.input {
-    width: 100%;
-    padding: 12px 16px;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 16px;
-    outline: none;
-    background-color: var(--bg-color);
-    color: var(--primary-text);
-    transition: all 0.3s ease;
-}
-
-/* Remove the number input arrows (spinners) */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type="number"] {
-    -moz-appearance: textfield;
-    /* Firefox */
-    appearance: none;
-    /* Standard */
-}
-
-
-/* Focus state - Teal border and shadow */
-.input:focus {
-    border-color: var(--teal-base);
-    box-shadow: 0 0 8px rgba(0, 128, 128, 0.3);
-    /* Soft teal shadow */
-}
-
-/* Placeholder color */
-.input::placeholder {
-    color: var(--secondary-text);
-    font-style: italic;
-}
-
-/* Hover effect */
-.input:hover {
-    border-color: var(--teal-light);
-}
-
-/* Focus state - Placeholder becomes transparent */
-.input:focus::placeholder {
-    color: transparent;
-}
-
-/* Focused input text color */
-.input:focus {
-    color: var(--primary-text);
-}
-
 .hidden {
     display: none !important;
 }
@@ -208,7 +107,7 @@ input[type="number"] {
 }
 
 .flex-col>*+* {
-    margin-top: 1rem;
+    margin-top: .75rem !important;
 }
 
 table {
@@ -273,4 +172,87 @@ td {
 
 .red {
     background-color: var(--highlight-color);
+}
+
+.input-container {
+    position: relative;
+    width: 16rem;
+    margin: 0;
+}
+
+.input-container input {
+    background-color: var(--bg-color);
+    color: var(--primary-text);
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.8rem;
+    padding-left: 0.6rem;
+    border-radius: 0.25rem;
+    border: 0.125rem solid var(--border-color);
+    /* border: 0.125rem solid var(--teal-light); */
+    transition: border-color 0.2s ease-in-out;
+    outline: none;
+}
+
+.input-container label {
+    position: absolute;
+    font-size: 1rem;
+    top: 50%;
+    left: 0.35rem;
+    padding: 0 0.25rem;
+    transform: translateY(-60%);
+    color: var(--secondary-text);
+    background-color: var(--bg-color);
+    transition: all .2s ease-in-out;
+    pointer-events: none;
+}
+
+.input-container input::placeholder {
+    color: transparent;
+}
+
+.input-container input:focus {
+    border: 0.125rem solid var(--teal-base);
+}
+
+.input-container input:focus+label,
+.input-container input:not(:placeholder-shown) + label {
+    top: -.75rem;
+    left: -.2rem;
+    /* font-size: .7rem; */
+    color: var(--teal-base);
+    transform: scale(.75);
+}
+
+.btn-0 {
+    width: 100%;
+    background-color: var(--teal-base);
+    color: var(--primary-text);
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border: 0.125rem solid var(--border-color);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+    font-weight: 600;
+}
+
+.btn-0:hover {
+    background-color: var(--teal-dark);
+    border-color: var(--teal-dark);
+}
+
+.btn-0:focus {
+    background-color: var(--teal-dark);
+    border-color: var(--teal-dark);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 1rem;
+}
+
+.success-message {
+    color: var(--teal-light);
 }

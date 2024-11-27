@@ -3,29 +3,29 @@
 <?php
 if (isset($_SESSION['newUser'])) {
     $newUser = $_SESSION['newUser'];
-    echo "<p>Hi $newUser! Now you can log in!</p>";
+    echo "<p class=\"success-message\">Hi $newUser! Now you can log in!</p>";
     unset($_SESSION['newUser']);
 }
 ?>
 
 <?php
 if (isset($errorMessage)) {
-    echo "<p>$errorMessage</p>";
+    echo "<p class=\"error-message\">$errorMessage</p>";
 }
 ?>
 
-<form action="/login" method="POST">
+<form action="/login" method="POST" class="flex-col">
 
-    <div>
+    <div class="input-container">
+        <input id="username" name="username" type="text" placeholder="username">
         <label for="username">username</label>
-        <input id="username" name="username" type="text">
     </div>
 
-    <div>
+    <div class="input-container">
+        <input id="password" name="password" type="password" placeholder="password">
         <label for="password">password</label>
-        <input id="password" name="password" type="password">
     </div>
 
-    <button type="submit">Log in</button>
+    <button type="submit" class="btn-0">Log in</button>
 
 </form>
