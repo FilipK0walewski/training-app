@@ -181,7 +181,7 @@ class Workout {
         const currentExercise = this.getCurrentExercise()
         const container = document.createElement('div')
         const exerciseName = document.createElement('h2')
-        exerciseName.textContent = currentExercise.name
+        exerciseName.textContent = `Current exercise: ${currentExercise.name}`
         const setCount = document.createElement('p')
         setCount.textContent = `Set ${currentExercise.getCurrentSetNumber()} / ${currentExercise.numberOfSets}`
         container.appendChild(exerciseName)
@@ -209,6 +209,10 @@ class Workout {
         this.getCurrentExercise().setPreviousSetAsNotFailed()
     }
 
+    setAsFinished() {
+        this.finished = true
+    }
+
     isFinished() {
         return this.finished
     }
@@ -230,10 +234,6 @@ class Workout {
     finishCurrentExercise() {
         console.log('finish current exercise')
         this.getCurrentExercise().setAsFinished()
-    }
-
-    finish() {
-        this.finished = true
     }
 
     serialize() {

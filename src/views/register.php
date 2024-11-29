@@ -8,7 +8,7 @@ if (isset($errorMessage)) {
 
 <form action="/register" method="POST" class="flex-col">
     <div class="input-container">
-    <input id="username" name="username" type="text" placeholder="" required>
+        <input id="username" name="username" type="text" placeholder="" required>
         <label for="username">username</label>
     </div>
 
@@ -24,3 +24,9 @@ if (isset($errorMessage)) {
 
     <button type="submit" class="btn-0">Create account</button>
 </form>
+
+<div>
+    Already have an account? <a href="/login">Sign in.</a>
+</div>
+
+<a href="/">home page</a>

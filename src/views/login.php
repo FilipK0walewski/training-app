@@ -29,3 +29,9 @@ if (isset($errorMessage)) {
     <button type="submit" class="btn-0">Log in</button>
 
 </form>
+
+<div>
+    Don't have an account? <a href="/register">Sign in</a>.
+</div>
+
+<a href="/">home page</a>

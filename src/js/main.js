@@ -4,26 +4,31 @@ let workout = new Workout()
 
 const loadFromLocalStorage = () => {
     const localWorkout = JSON.parse(localStorage.getItem('workout'))
-
-    const exercises = []
-    localWorkout.exercises.forEach(e => {
-        const sets = []
-        e.sets.forEach(s => {
-            let startedAt = s.startedAt === null ? null : new Date(s.startedAt)
-            let finishedAt = s.finishedAt === null ? null : new Date(s.finishedAt)
-            const set = new Set(startedAt, finishedAt, s.failed)
-            sets.push(set)
-        })
-        const exercise = new Exercise(e.name, e.weight, e.numberOfSets, sets, e.finished, e.failed)
-        exercises.push(exercise)
-    });
-    workout = new Workout(exercises, localWorkout.finished)
+    if (localWorkout) {
+        const exercises = []
+        localWorkout.exercises.forEach(e => {
+            const sets = []
+            e.sets.forEach(s => {
+                let startedAt = s.startedAt === null ? null : new Date(s.startedAt)
+                let finishedAt = s.finishedAt === null ? null : new Date(s.finishedAt)
+                const set = new Set(startedAt, finishedAt, s.failed)
+                sets.push(set)
+            })
+            const exercise = new Exercise(e.name, e.weight, e.numberOfSets, sets, e.finished, e.failed)
+            exercises.push(exercise)
+        });
+        workout = new Workout(exercises, localWorkout.finished)
+    }
 }
 
 loadFromLocalStorage()
 
 const container = document.getElementById('container')
+
 const counter = document.getElementById('counter')
+const counterLabel = document.getElementById('counterLabel')
+const counterNumber = document.getElementById('counterNumber')
+
 const workoutInfo = document.getElementById('workoutInfo')
 const summaryTable = document.getElementById('summaryTable')
 const summaryTbody = document.getElementById('summaryTbody')
@@ -110,12 +115,16 @@ const hideWorkoutInfo = () => {
 const addCounter = (text, initValue = 0) => {
     if (counterIntervalId !== null) return
     if (counter.classList.contains('hidden')) counter.classList.remove('hidden')
-    if (counterIntervalId === null) counter.innerHTML = `${text}: ${initValue}s`
+    if (counterIntervalId === null) {
+        counterNumber.textContent = initValue
+        counterLabel.textContent = `${text}:`
+    }
 
     let count = initValue
     counterIntervalId = setInterval(() => {
         count += 1
-        counter.innerHTML = `${text}: ${count}s`
+        counterNumber.textContent = count
+        counterLabel.textContent = `${text}:`
     }, 1000)
 }
 
@@ -129,7 +138,7 @@ const resetCounter = () => {
 
 const addButton = (text, callback) => {
     const button = document.createElement('button')
-    button.classList.add('btn')
+    button.classList.add('btn-0')
     button.textContent = text
     button.addEventListener('click', () => {
         callback()
@@ -172,6 +181,14 @@ const finishExercise = () => {
 
 const finishWorkout = () => {
     console.log('workout end')
+    // localStorage.clear('workout')
+    workout.setAsFinished()
+    update()
+}
+
+const resumeWorkout = () => {
+    workout.setAsNotFinished()
+    update()
 }
 
 const saveToLocalStorage = () => {
@@ -181,6 +198,12 @@ const saveToLocalStorage = () => {
 const update = () => {
     saveToLocalStorage()
     clearContainer()
+
+    console.log(workout.isFinished())
+    if (workout.isFinished() === true) {
+        addButton('Nevermind, bo back to workout.', resumeWorkout)
+        return
+    }
 
     const currentExercise = workout.getCurrentExercise()
     if (currentExercise !== null && currentExercise.isLastSetFinished() === true && currentExercise.isFinished() === false) {
@@ -200,7 +223,7 @@ const update = () => {
         }
         return
     }
-    
+
     hideSummary()
     hideHomeUrl()
     hideExerciseForm()
