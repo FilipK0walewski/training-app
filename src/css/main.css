@@ -53,7 +53,6 @@ html {
 }
 
 body {
-    font-size: 20px;
     font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
     background-color: var(--bg-color);
     color: var(--primary-text);
@@ -71,9 +70,10 @@ h4,
 h5,
 h6 {
     color: var(--primary-text);
+    text-align: center;
 }
 
-p {
+p, li {
     color: var(--secondary-text);
 }
 
@@ -99,74 +99,72 @@ hr {
     display: none !important;
 }
 
-.flex-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.flex-col>*+* {
-    margin-top: .75rem !important;
-}
-
-table {
+/* Table Styles */
+.table-0 {
     width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-    background-color: #1e1e1e;
-    border-radius: .25rem;
-    box-shadow: 0 .25rem .375rem rgba(0, 0, 0, 0.2);
+    border-collapse: separate; /* Use separate borders for better rounded corners */
+    background-color: transparent; /* Transparent background for the table */
+    color: var(--primary-text); /* Text color for the table */
+    font-size: .75rem;
+    border-radius: 0.25rem;
+    overflow: hidden;
 }
 
-th,
-td {
-    padding: .6rem;
+/* Table header and cell styles with rounded corners */
+.table-0 th, .table-0 td {
+    padding: 0.5rem;
     text-align: left;
-    color: var(--primary-text);
+    border: 0.125rem solid var(--border-color);
+    border-radius: 0.25rem; /* Rounded corners for both td and th */
+    transition: all 0.2s ease-in-out;
 }
 
-th {
+/* Header Style */
+.table-0 th {
+    background-color: var(--teal-base); /* Header background */
+    color: var(--primary-text); /* Text color for header */
+    font-weight: 600;
+}
+
+/* Table row hover effect */
+.table-0 tr:hover {
+    background-color: var(--teal-light); /* Light teal on hover */
+}
+
+/* Table cell focus effect */
+.table-0 td:focus {
     background-color: var(--teal-dark);
-    font-weight: bold;
+    border-color: var(--teal-dark);
 }
 
-td {
-    background-color: #232323;
-    border-bottom: 1px solid var(--border-color);
-}
-
-/* Hover Effect for Rows */
-tr:hover {
-    background-color: var(--teal-light);
+/* Disabled row style */
+.table-0 .disabled {
+    background-color: #1e1e1e;
+    color: var(--border-color);
     cursor: default;
 }
 
-/* Alternate Row Color */
-tr:nth-child(even) {
-    background-color: #2a2a2a;
+/* Zebra Stripes for rows */
+.table-0 tr:nth-child(even) {
+    background-color: var(--light-gray);
 }
 
-tr:nth-child(odd) {
-    background-color: #232323;
+.table-0 tr:nth-child(odd) {
+    background-color: var(--white);
 }
 
-table,
-th,
-td {
-    border: .125rem solid var(--border-color);
-    /* border-radius: .25rem !important; */
+/* Border radius adjustments for table rows */
+.table-0 tr:first-child th {
+    border-top-left-radius: 0.25rem; /* Round top-left corner of the header */
+    border-top-right-radius: 0.25rem; /* Round top-right corner of the header */
 }
 
-/* Responsive Styling */
-@media (max-width: 768px) {
-    table {
-        font-size: 14px;
-    }
-
-    th,
-    td {
-        padding: 8px;
-    }
+.table-0 tr:last-child td {
+    border-bottom-left-radius: 0.25rem; /* Round bottom-left corner of the table */
+    border-bottom-right-radius: 0.25rem; /* Round bottom-right corner of the table */
+}
+ul {
+    list-style-position: inside;
 }
 
 .red {
@@ -175,7 +173,7 @@ td {
 
 .input-container {
     position: relative;
-    width: 16rem;
+    width: 100%;
     margin: 0;
 }
 
@@ -247,6 +245,14 @@ td {
     border-color: var(--teal-dark);
 }
 
+.btn-0:disabled {
+    background-color: #1e1e1e;
+    cursor: default;
+    border-color: var(--border-color);
+    color: var(--border-color);
+
+}
+
 .error-message {
     color: var(--error-color);
     font-size: 1rem;
@@ -259,4 +265,53 @@ td {
 .huge-text {
     font-size: 5rem;
     line-height: 3rem;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 1024px;
+    padding: 1rem;
+}
+
+.main-container > *+* {
+    margin-top: 1rem;
+}
+
+.form-0 {
+    width: 100%;
+    max-width: 20rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.flex-center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-col>*+* {
+    margin-top: .75rem !important;
+}
+
+@media (max-width: 768px) {
+    :root {
+        font-size: 14px;
+    }
+
+    body {
+        padding: 0;
+    }
+}
+
+.failed {
+    color: var(--error-color);
 }

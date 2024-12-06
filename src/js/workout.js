@@ -55,10 +55,11 @@ class Set {
 }
 
 class Exercise {
-    constructor(name, weight, numberOfSets, sets = [], finished = false, failed = false) {
+    constructor(name, weight, numberOfSets, numberOfReps, sets = [], finished = false, failed = false) {
         this.name = name
         this.weight = weight
         this.numberOfSets = numberOfSets
+        this.numberOfReps = numberOfReps
         this.sets = sets
         this.finished = finished
         this.failed = failed
@@ -213,12 +214,16 @@ class Workout {
         this.finished = true
     }
 
+    setAsNotFinished() {
+        this.finished = false
+    }
+
     isFinished() {
         return this.finished
     }
 
-    addNewExercise(exerciseName, weight, numberOfSets) {
-        const newExercise = new Exercise(exerciseName, weight, numberOfSets)
+    addNewExercise(exerciseName, weight, numberOfSets, numberOfReps) {
+        const newExercise = new Exercise(exerciseName, weight, numberOfSets, numberOfReps)
         newExercise.addNewSet()
         this.exercises.push(newExercise)
     }

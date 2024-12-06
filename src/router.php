@@ -1,77 +1,45 @@
 <?php
+require_once 'controllers/views/index.php';
 
-// $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+class Router {
+    private $routes = [];
 
-// $routes = [
-//     '/' => 'controllers/home.php',
-//     '/about' => 'controllers/about.php',
-//     '/workout' => 'controllers/workout.php',
-//     '/login' => 'controllers/login.php',
-//     '/logout' => 'controllers/logout.php',
-//     '/register' => 'controllers/register.php',
-//     '/profile' => 'controllers/profile.php',
-//     '/api/users' => 'controllers/api.php'
-// ];
-
-// if (array_key_exists($uri, $routes)) {
-//     require $routes[$uri];
-// } else {
-//     require 'controllers/404.php';
-// }
-
-
-class Router
-{
-    protected $routes = [];
-
-    public function get($uri, $action)
-    {
-        $this->routes['GET'][$uri] = $action;
+    public function addRoute($method, $route, $callback) {
+        $this->routes[] = [
+            'method' => $method,
+            'route' => $route,
+            'callback' => $callback
+        ];
     }
 
-    public function post($uri, $action)
-    {
-        $this->routes['POST'][$uri] = $action;
-    }
+    // Match the current URL
+    public function match($url, $method) {
+        foreach ($this->routes as $route) {
+            // Check if the method matches (GET, POST, etc.)
+            if ($method === $route['method']) {
+                // Extract parameters from the route
+                $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_]+)', $route['route']);
+                $pattern = "#^" . $pattern . "$#";
 
-    public function handleRequest($uri)
-    {
-        echo($uri);
-        echo(PHP_URL_PATH);
-
-        $method = $_SERVER['REQUEST_METHOD'];  // Get the HTTP method
-        $uri = parse_url($uri, PHP_URL_PATH);  // Clean the URL (without query parameters)
-
-        if (isset($this->routes[$method][$uri])) {
-            // Extract the controller and function from the action string
-
-            list($controller, $function) = explode('@', $this->routes[$method][$uri]);
-
-            // Include the controller file
-            $controllerFile = "controllers/{$controller}.php";
-            echo($controllerFile);
-            if (file_exists($controllerFile)) {
-                require_once $controllerFile;
-
-                // Call the function
-                if (function_exists($function)) {
-                    $function();
-                } else {
-                    $this->load404Page();
-                    // echo "Function {$function} not found in {$controller}.";
+                if (preg_match($pattern, $url, $matches)) {
+                    array_shift($matches); // Remove the full match from the matches
+                    return [
+                        'callback' => $route['callback'],
+                        'params' => $matches
+                    ];
                 }
-            } else {
-                // echo "Controller file {$controller} not found.";
-                $this->load404Page();
             }
-        } else {
-            // No route found, load the 404 page
-            $this->load404Page();
         }
+        return null;
     }
 
-    private function load404Page()
-    {
-        include "views/404.php";
+    // Dispatch to the callback if the route is matched
+    public function handleRequest($url, $method) {
+        $match = $this->match($url, $method);
+        if ($match) {
+            call_user_func_array($match['callback'], $match['params']);
+        } else {
+            notFoundView();
+        }
     }
 }

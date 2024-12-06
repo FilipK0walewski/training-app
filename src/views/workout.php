@@ -1,5 +1,4 @@
 <h1>Training with a fixed weight</h1>
-<a id="homeUrl" href="/">go back</a>
 
 <div id="workoutInfo" class="flex-col"></div>
 
@@ -11,8 +10,7 @@
     </div>
 </div>
 
-
-<table id="summaryTable" class="hidden">
+<table id="summaryTable" class="hidden table-0">
     <thead>
         <tr>
             <th>Exercise</th>
@@ -26,8 +24,6 @@
     </tbody>
 </table>
 
-<div id="container" class="flex-col"></div>
-
 <form id="exerciseForm" class="hidden flex-col">
     <div class="input-container">
         <input id="exercise" class="input" type="text" name="exerciseName" placeholder="exercise" value="bench press" required>
@@ -40,11 +36,18 @@
     </div>
 
     <div class="input-container">
-        <input id="sets" class="input" type="number" name="exerciseSetNumber" placeholder="number of sets" value="4" required>
+        <input id="sets" class="input" type="number" name="exerciseSetNumber" placeholder="number of sets" value="5" required>
         <label for="sets">number of sets</label>
+    </div>
+
+    <div class="input-container">
+        <input id="reps" class="input" type="number" name="exerciseRepsNumber" placeholder="number of reps" value="5" required>
+        <label for="reps">number of reps</label>
     </div>
 
     <button type="submit" class="btn-0">Start exercise!</button>
 </form>
+
+<div id="container" class="flex-col"></div>
 
 <script type="module" src="js/main.js" async></script>

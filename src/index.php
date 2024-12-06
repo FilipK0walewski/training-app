@@ -1,22 +1,31 @@
 <?php
+session_start();
+require_once 'router.php';
+require_once 'controllers/api/workout.php';
+require_once 'controllers/forms/login.php';
+require_once 'controllers/forms/logout.php';
+require_once 'controllers/forms/register.php';
+require_once 'controllers/views/index.php';
 
-require_once 'router.php';  // Include the router file
-
-// Create a new Router instance
 $router = new Router();
 
-// Define routes for the views
-$router->get('/', 'viewsController@home'); // Route to the home function
-$router->get('/about', 'viewsController@about'); // Route to the home function
-$router->get('/', 'viewsController@home'); // Route to the home function
-$router->get('/', 'viewsController@home'); // Route to the home function
-$router->get('/', 'viewsController@home'); // Route to the home function
-$router->get('/', 'viewsController@home'); // Route to the home function
+// views
+$router->addRoute('GET', '/', 'homeView');
+$router->addRoute('GET', '/about', 'aboutView');
+$router->addRoute('GET', '/login', 'loginView');
+$router->addRoute('GET', '/profile', 'profileView');
+$router->addRoute('GET', '/register', 'registerView');
+$router->addRoute('GET', '/workout', 'workoutView');
+$router->addRoute('GET', '/workouts', 'workoutListView');
+$router->addRoute('GET', '/workouts/{id}', 'workoutDetailView');
 
-$router->get('/about', 'homeController@about'); // Route to the about function
+// forms
+$router->addRoute('POST', '/login', 'loginForm');
+$router->addRoute('GET', '/logout', 'logoutForm');
+$router->addRoute('POST', '/register', 'registerForm');
 
-// Define routes for the API
-$router->get('/api/user', 'apiController@getUser'); // Route to the API function
+// api
+$router->addRoute('GET', '/api/users', 'getUsers');
+$router->addRoute('POST', '/api/workouts', 'addWorkout');
 
-// Process the request and route it
-$router->handleRequest($_SERVER['REQUEST_URI']);
+$router->handleRequest($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);
