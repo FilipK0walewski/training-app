@@ -7,4 +7,21 @@ services:
       - "8000:80"
     volumes:
       - ./src:/var/www/html
+    depends_on:
+      - db
     restart: always
+
+  db:
+    image: postgres:latest-alpine
+    container_name: training-db
+    environment:
+      POSTGRES_DB: db  # Database name
+      POSTGRES_USER: user  # Database user
+      POSTGRES_PASSWORD: password  # Database password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
+    restart: always
+
+volumes:
+  db_data:
