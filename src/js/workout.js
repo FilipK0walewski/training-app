@@ -55,10 +55,11 @@ class Set {
 }
 
 class Exercise {
-    constructor(name, weight, numberOfSets, sets = [], finished = false, failed = false) {
+    constructor(name, weight, numberOfSets, numberOfReps, sets = [], finished = false, failed = false) {
         this.name = name
         this.weight = weight
         this.numberOfSets = numberOfSets
+        this.numberOfReps = numberOfReps
         this.sets = sets
         this.finished = finished
         this.failed = failed
@@ -181,7 +182,7 @@ class Workout {
         const currentExercise = this.getCurrentExercise()
         const container = document.createElement('div')
         const exerciseName = document.createElement('h2')
-        exerciseName.textContent = currentExercise.name
+        exerciseName.textContent = `Current exercise: ${currentExercise.name}`
         const setCount = document.createElement('p')
         setCount.textContent = `Set ${currentExercise.getCurrentSetNumber()} / ${currentExercise.numberOfSets}`
         container.appendChild(exerciseName)
@@ -209,12 +210,20 @@ class Workout {
         this.getCurrentExercise().setPreviousSetAsNotFailed()
     }
 
+    setAsFinished() {
+        this.finished = true
+    }
+
+    setAsNotFinished() {
+        this.finished = false
+    }
+
     isFinished() {
         return this.finished
     }
 
-    addNewExercise(exerciseName, weight, numberOfSets) {
-        const newExercise = new Exercise(exerciseName, weight, numberOfSets)
+    addNewExercise(exerciseName, weight, numberOfSets, numberOfReps) {
+        const newExercise = new Exercise(exerciseName, weight, numberOfSets, numberOfReps)
         newExercise.addNewSet()
         this.exercises.push(newExercise)
     }
@@ -230,10 +239,6 @@ class Workout {
     finishCurrentExercise() {
         console.log('finish current exercise')
         this.getCurrentExercise().setAsFinished()
-    }
-
-    finish() {
-        this.finished = true
     }
 
     serialize() {

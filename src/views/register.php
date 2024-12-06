@@ -1,26 +1,36 @@
-<h2>Create an account</h2>
+<h2>Create Your Account</h2>
 
-<?php
-if (isset($errorMessage)) {
-    echo "<p class=\"error-message\">$errorMessage</p>";
-}
-?>
+<p class="text-center">Join us today to start your fitness journey! Fill in the details below to create your account and start tracking your progress.</p>
 
-<form action="/register" method="POST" class="flex-col">
-    <div class="input-container">
-    <input id="username" name="username" type="text" placeholder="" required>
-        <label for="username">username</label>
-    </div>
+<?php if (isset($errorMessage)): ?>
+    <p class="error-message text-center"><?php echo $errorMessage ?></p>
+<?php endif ?>
 
-    <div class="input-container">
-        <input id="password" name="password" type="password" placeholder="" required>
-        <label for="password">password</label>
-    </div>
+<div class="flex-center">
 
-    <div class="input-container">
-        <input id="confirmedPassword" name="confirmedPassword" type="password" placeholder="" required>
-        <label for="confirmedPassword">confirm password</label>
-    </div>
+    <form action="/register" method="POST" class="flex-col form-0">
+        <div class="input-container">
+            <input id="username" name="username" type="text" placeholder="" required>
+            <label for="username">username</label>
+        </div>
 
-    <button type="submit" class="btn-0">Create account</button>
-</form>
+        <div class="input-container">
+            <input id="password" name="password" type="password" placeholder="" required>
+            <label for="password">password</label>
+        </div>
+
+        <div class="input-container">
+            <input id="confirmedPassword" name="confirmedPassword" type="password" placeholder="" required>
+            <label for="confirmedPassword">confirm password</label>
+        </div>
+
+        <button type="submit" class="btn-0">Create account</button>
+    </form>
+
+</div>
+
+<p class="text-center">
+    Already have an account? <a href="/login">Sign in</a>.
+</p>
+
+<p class="text-center"><a href="/">Go back to home page</a></p>

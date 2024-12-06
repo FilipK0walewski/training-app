@@ -1,19 +1,45 @@
 <?php
+require_once 'controllers/views/index.php';
 
-$uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+class Router {
+    private $routes = [];
 
-$routes = [
-    '/' => 'controllers/home.php',
-    '/about' => 'controllers/about.php',
-    '/workout' => 'controllers/workout.php',
-    '/login' => 'controllers/login.php',
-    '/logout' => 'controllers/logout.php',
-    '/register' => 'controllers/register.php',
-    '/profile' => 'controllers/profile.php',
-];
+    public function addRoute($method, $route, $callback) {
+        $this->routes[] = [
+            'method' => $method,
+            'route' => $route,
+            'callback' => $callback
+        ];
+    }
 
-if (array_key_exists($uri, $routes)) {
-    require $routes[$uri];
-} else {
-    require 'controllers/404.php';
+    // Match the current URL
+    public function match($url, $method) {
+        foreach ($this->routes as $route) {
+            // Check if the method matches (GET, POST, etc.)
+            if ($method === $route['method']) {
+                // Extract parameters from the route
+                $pattern = preg_replace('/\{[a-zA-Z0-9_]+\}/', '([a-zA-Z0-9_]+)', $route['route']);
+                $pattern = "#^" . $pattern . "$#";
+
+                if (preg_match($pattern, $url, $matches)) {
+                    array_shift($matches); // Remove the full match from the matches
+                    return [
+                        'callback' => $route['callback'],
+                        'params' => $matches
+                    ];
+                }
+            }
+        }
+        return null;
+    }
+
+    // Dispatch to the callback if the route is matched
+    public function handleRequest($url, $method) {
+        $match = $this->match($url, $method);
+        if ($match) {
+            call_user_func_array($match['callback'], $match['params']);
+        } else {
+            notFoundView();
+        }
+    }
 }

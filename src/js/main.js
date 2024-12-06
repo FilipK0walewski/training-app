@@ -4,26 +4,31 @@ let workout = new Workout()
 
 const loadFromLocalStorage = () => {
     const localWorkout = JSON.parse(localStorage.getItem('workout'))
-
-    const exercises = []
-    localWorkout.exercises.forEach(e => {
-        const sets = []
-        e.sets.forEach(s => {
-            let startedAt = s.startedAt === null ? null : new Date(s.startedAt)
-            let finishedAt = s.finishedAt === null ? null : new Date(s.finishedAt)
-            const set = new Set(startedAt, finishedAt, s.failed)
-            sets.push(set)
-        })
-        const exercise = new Exercise(e.name, e.weight, e.numberOfSets, sets, e.finished, e.failed)
-        exercises.push(exercise)
-    });
-    workout = new Workout(exercises, localWorkout.finished)
+    console.log(localWorkout)
+    if (localWorkout) {
+        const exercises = []
+        localWorkout.exercises.forEach(e => {
+            console.log(e)
+            const sets = []
+            e.sets.forEach(s => {
+                let startedAt = s.startedAt === null ? null : new Date(s.startedAt)
+                let finishedAt = s.finishedAt === null ? null : new Date(s.finishedAt)
+                const set = new Set(startedAt, finishedAt, s.failed)
+                sets.push(set)
+            })
+            const exercise = new Exercise(e.name, e.weight, e.numberOfSets, e.numberOfReps, sets, e.finished, e.failed)
+            exercises.push(exercise)
+        });
+        workout = new Workout(exercises, localWorkout.finished)
+    }
 }
 
-loadFromLocalStorage()
-
 const container = document.getElementById('container')
+
 const counter = document.getElementById('counter')
+const counterLabel = document.getElementById('counterLabel')
+const counterNumber = document.getElementById('counterNumber')
+
 const workoutInfo = document.getElementById('workoutInfo')
 const summaryTable = document.getElementById('summaryTable')
 const summaryTbody = document.getElementById('summaryTbody')
@@ -37,11 +42,16 @@ exerciseForm.addEventListener('submit', (event) => {
     const exerciseName = exerciseData.get('exerciseName')
     const exerciseWeight = exerciseData.get('exerciseWeight')
     const exerciseSetNumber = parseInt(exerciseData.get('exerciseSetNumber'))
-    workout.addNewExercise(exerciseName, exerciseWeight, exerciseSetNumber)
+    const exerciseRepsNumber = parseInt(exerciseData.get('exerciseRepsNumber'))
+
+    workout.addNewExercise(exerciseName, exerciseWeight, exerciseSetNumber, exerciseRepsNumber)
     update()
 })
 
-const clearContainer = () => container.innerHTML = ''
+const clearContainer = () => {
+    container.innerHTML = ''
+    console.log('container clear')
+}
 
 const hideExerciseForm = () => {
     if (!exerciseForm.classList.contains('hidden')) exerciseForm.classList.add('hidden')
@@ -54,6 +64,7 @@ const displayExerciseForm = () => {
 
 const addSummary = () => {
     if (summaryTable.classList.contains('hidden')) summaryTable.classList.remove('hidden')
+    summaryTbody.innerHTML = ''
     for (let i = 0; i < workout.exercises.length; i++) {
         const tr = document.createElement('tr')
         const exercise = workout.exercises[i]
@@ -87,13 +98,6 @@ const hideSummary = () => {
     summaryTbody.innerHTML = ''
 }
 
-const hideHomeUrl = () => {
-    const homeUrl = document.getElementById('homeUrl')
-    if (!homeUrl.classList.contains('hidden')) {
-        homeUrl.classList.add('hidden')
-    }
-}
-
 const addWorkoutInfo = () => {
     if (workoutInfo.classList.contains('hidden')) workoutInfo.classList.remove('hidden')
     workoutInfo.innerHTML = ''
@@ -110,12 +114,16 @@ const hideWorkoutInfo = () => {
 const addCounter = (text, initValue = 0) => {
     if (counterIntervalId !== null) return
     if (counter.classList.contains('hidden')) counter.classList.remove('hidden')
-    if (counterIntervalId === null) counter.innerHTML = `${text}: ${initValue}s`
+    if (counterIntervalId === null) {
+        counterNumber.textContent = initValue
+        counterLabel.textContent = `${text}:`
+    }
 
     let count = initValue
     counterIntervalId = setInterval(() => {
         count += 1
-        counter.innerHTML = `${text}: ${count}s`
+        counterNumber.textContent = count
+        counterLabel.textContent = `${text}:`
     }, 1000)
 }
 
@@ -129,9 +137,10 @@ const resetCounter = () => {
 
 const addButton = (text, callback) => {
     const button = document.createElement('button')
-    button.classList.add('btn')
+    button.classList.add('btn-0')
     button.textContent = text
     button.addEventListener('click', () => {
+        button.disabled = true
         callback()
     })
     container.appendChild(button)
@@ -171,7 +180,80 @@ const finishExercise = () => {
 }
 
 const finishWorkout = () => {
-    console.log('workout end')
+    workout.setAsFinished()
+    hideExerciseForm()
+    update()
+}
+
+const resumeWorkout = () => {
+    workout.setAsNotFinished()
+    displayExerciseForm()
+    update()
+}
+
+const addLoginMessage = () => {
+    console.log('adding login message')
+    const div = document.createElement('div')
+    div.classList.add('flex-col')
+    const p = document.createElement('p')
+    p.textContent = 'In order to save your workouts you need to be signed in.'
+    const a = document.createElement('a')
+    a.textContent = 'sign in'
+    a.href = '/login'
+    div.appendChild(p)
+    div.appendChild(a)
+    container.appendChild(div)
+    console.log('login message added')
+
+}
+
+const addSuccessSaveMessage = (workoutId) => {
+    const div = document.createElement('div')
+    div.classList.add('flex-col')
+    const p = document.createElement('p')
+    p.textContent = 'Your workout has been successfully saved.'
+    const a0 = document.createElement('a')
+    a0.textContent = 'All your workouts'
+    a0.href = '/workouts'
+    const a1 = document.createElement('a')
+    a1.textContent = 'This workout'
+    a1.href = `/workouts/${workoutId}`
+    div.appendChild(p)
+    div.appendChild(a0)
+    div.appendChild(a1)
+    container.appendChild(div)
+}
+
+const saveWorkout = () => {
+    
+    fetch('/api/workouts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(workout)
+    })
+        .then(response => {
+            if (response.status === 401) {
+                throw new Error('Unauthorized');
+            }
+            return response.json()
+        })
+        .then(data => {
+            clearContainer()
+            addSuccessSaveMessage(data.workoutId)
+        }).catch(error => {
+            if (error.message === 'Unauthorized') {
+                addLoginMessage()
+            } else {
+                console.error('Error: ', error)
+            }
+        })
+}
+
+const abandonWorkout = () => {
+    localStorage.removeItem('workout')
+    workout = new Workout()
+    hideSummary()
+    update()
 }
 
 const saveToLocalStorage = () => {
@@ -179,8 +261,18 @@ const saveToLocalStorage = () => {
 }
 
 const update = () => {
+    console.log('update')
     saveToLocalStorage()
     clearContainer()
+
+    if (workout.isFinished() === true) {
+        // workout is finished
+        addSummary()
+        addButton('Nevermind, bo back to workout.', resumeWorkout)
+        addButton('End workout and save your progress.', saveWorkout)
+        addButton('End workout without saving.', abandonWorkout)
+        return
+    }
 
     const currentExercise = workout.getCurrentExercise()
     if (currentExercise !== null && currentExercise.isLastSetFinished() === true && currentExercise.isFinished() === false) {
@@ -200,9 +292,8 @@ const update = () => {
         }
         return
     }
-    
+
     hideSummary()
-    hideHomeUrl()
     hideExerciseForm()
     addWorkoutInfo()
 
@@ -233,4 +324,5 @@ const update = () => {
     }
 }
 
+loadFromLocalStorage()
 update()
