@@ -65,7 +65,12 @@ class Exercise {
         this.failed = failed
     }
 
+    getName() {
+        return this.name
+    }
+
     getCurrentSet() {
+        if (this.sets.length === 0) return null
         return this.sets.at(-1)
     }
 
@@ -86,6 +91,7 @@ class Exercise {
     }
 
     getPreviousSetFinishTime() {
+        if (this.sets.length < 2) return new Date()
         return this.getPreviousSet().getFinishTime()
     }
 
@@ -101,12 +107,8 @@ class Exercise {
         return this.weight
     }
 
-    isOnFirstSet() {
+    isCurrentSetFirst() {
         return this.sets.length === 1 ? true : false
-    }
-
-    isSetStarted() {
-        return this.getCurrentSet().startedAt === null ? false : true
     }
 
     isLastSetFinished() {
@@ -114,16 +116,20 @@ class Exercise {
         return false
     }
 
-    isFinished() {
-        return this.finished
-        // if (this.finished === true) return true
-        // else if (this.numberOfSets === this.sets.length && this.getCurrentSet().isFinished() === true) return true
-        // else return false
+    isCurrentSetStarted() {
+        const currentSet = this.getCurrentSet()
+        if (!currentSet) return false
+        if (currentSet.startedAt === null) return false
+        return true
     }
 
     isPreviousSetFailed() {
         if (this.sets.length <= 1) return false
         return this.getPreviousSet().isFailed()
+    }
+
+    isFinished() {
+        return this.finished
     }
 
     isFailed() {
@@ -159,10 +165,8 @@ class Exercise {
     }
 
     finishCurrentSet() {
-        console.log('finishCurrentSet', this.finished)
         this.getCurrentSet().setAsFinished()
         if (!(this.numberOfSets === this.sets.length)) this.addNewSet()
-        console.log('finishCurrentSet', this.finished)
     }
 }
 
@@ -178,24 +182,12 @@ class Workout {
         return this.exercises.at(-1)
     }
 
-    getCurrentExerciseInfoAsHTML() {
-        const currentExercise = this.getCurrentExercise()
-        const container = document.createElement('div')
-        const exerciseName = document.createElement('h2')
-        exerciseName.textContent = `Current exercise: ${currentExercise.name}`
-        const setCount = document.createElement('p')
-        setCount.textContent = `Set ${currentExercise.getCurrentSetNumber()} / ${currentExercise.numberOfSets}`
-        container.appendChild(exerciseName)
-        container.appendChild(setCount)
-        return container
-    }
-
     getNumberOfFinishedExercises () {
         return this.exercises.filter(e => e.finished === true).length
     }
 
     isCurrentSetStarted() {
-        return this.getCurrentExercise().isSetStarted()
+        return this.getCurrentExercise().isCurrentSetStarted()
     }
 
     setCurrentSetAsFailed() {
@@ -237,7 +229,6 @@ class Workout {
     }
 
     finishCurrentExercise() {
-        console.log('finish current exercise')
         this.getCurrentExercise().setAsFinished()
     }
 
@@ -246,6 +237,42 @@ class Workout {
             exercises: this.exercises.map(exercise => exercise.serialize()),
             finished: this.finished
         }
+    }
+
+    isCurrentExerciseLastSet() {
+        return this.getCurrentExercise().isLastSetFinished()
+    }
+
+    isTimeForNewExercise() {
+        const currentExercise = this.getCurrentExercise()
+        if (currentExercise === null) return true
+        else if (currentExercise.isFinished() === true) return true
+        else return false        
+    }
+
+    isStarted () {
+        if (this.exercises.length === 0) return false
+        return true 
+    }
+
+    isDuringExerciseSet() {
+        return this.getCurrentExercise().isCurrentSetStarted()
+    }
+
+    getCurrentExerciseSetDuration() {
+        return parseInt((new Date() - this.getCurrentExercise().getCurrentSetStartTime()) / 1000)
+    }
+
+    getCurrentExerciseBreakDuration() {
+        return parseInt((new Date() - this.getCurrentExercise().getPreviousSetFinishTime()) / 1000)
+    }
+
+    isCurrentExerciseFirstSet() {
+        return this.getCurrentExercise().isCurrentSetFirst()
+    }
+
+    isCurrentExercisePreviousSetFailed() {
+        return this.getCurrentExercise().isPreviousSetFailed()
     }
 }
 

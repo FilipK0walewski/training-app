@@ -250,7 +250,6 @@ ul {
     cursor: default;
     border-color: var(--border-color);
     color: var(--border-color);
-
 }
 
 .error-message {
@@ -263,8 +262,8 @@ ul {
 }
 
 .huge-text {
-    font-size: 5rem;
-    line-height: 3rem;
+    font-size: 10rem;
+    line-height: 6rem;
 }
 
 .main-container {
@@ -310,8 +309,25 @@ ul {
     body {
         padding: 0;
     }
+
+    .btn-0 {
+        width: 100%;
+    }
 }
 
 .failed {
     color: var(--error-color);
+}
+
+.container-sm {
+    width: 100%;
+    max-width: 21rem;
+}
+
+.sm {
+    width: 10rem;
+}
+
+.w-full {
+    width: 100%;
 }

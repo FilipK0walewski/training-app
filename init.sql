@@ -14,8 +14,8 @@ CREATE TABLE IF NOT EXISTS workouts (
 CREATE TABLE IF NOT EXISTS exercises (
     id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     workout_id INT,
-    name VARCHAR(50) NOT NULL,
-    weight REAL NOT NULL CHECK (weight > 0),
+    name TEXT NOT NULL,
+    weight REAL NOT NULL CHECK (weight >= 0),
     number_of_reps SMALLINT NOT NULL CHECK (number_of_reps >= 1),
     number_of_sets SMALLINT NOT NULL CHECK (number_of_sets >= 1),
     is_failed BOOLEAN NOT NULL,
