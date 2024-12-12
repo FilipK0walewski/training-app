@@ -17,7 +17,9 @@ function loginForm()
     }
 
     $query = 'SELECT id, username, password FROM users WHERE username = $1';
+    print_r('1');
     $result = pg_query_params($conn, $query, array($username));
+    print_r('2');
 
     if ($result) {
         $user = pg_fetch_assoc($result);

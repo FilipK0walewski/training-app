@@ -1,6 +1,6 @@
 <h1>Training with a fixed weight</h1>
 
-<div id="workoutInfo" class="flex-col"></div>
+<div id="exerciseInfo" class="flex-col"></div>
 
 <div id="counter" class="hidden flex-col">
     <p id="counterLabel"></p>
@@ -24,30 +24,35 @@
     </tbody>
 </table>
 
-<form id="exerciseForm" class="hidden flex-col">
-    <div class="input-container">
-        <input id="exercise" class="input" type="text" name="exerciseName" placeholder="exercise" value="bench press" required>
-        <label for="exercise">exercise</label>
-    </div>
+<div class="flex-col">
 
-    <div class="input-container">
-        <input id="weight" class="input" type="number" name="exerciseWeight" placeholder="weight" value="100" step=".5" required>
-        <label for="weight">weight</label>
-    </div>
+    <form id="exerciseForm" class="hidden flex-col container-sm">
+        <div class="input-container">
+            <input id="exercise" class="input" type="text" name="exerciseName" placeholder="exercise" required>
+            <label for="exercise">exercise</label>
+        </div>
 
-    <div class="input-container">
-        <input id="sets" class="input" type="number" name="exerciseSetNumber" placeholder="number of sets" value="5" required>
-        <label for="sets">number of sets</label>
-    </div>
+        <div class="input-container">
+            <input id="weight" class="input" type="number" name="exerciseWeight" placeholder="weight" step=".5" required>
+            <label for="weight">weight</label>
+        </div>
 
-    <div class="input-container">
-        <input id="reps" class="input" type="number" name="exerciseRepsNumber" placeholder="number of reps" value="5" required>
-        <label for="reps">number of reps</label>
-    </div>
+        <div class="input-container">
+            <input id="sets" class="input" type="number" name="exerciseSetNumber" placeholder="number of sets" required>
+            <label for="sets">number of sets</label>
+        </div>
 
-    <button type="submit" class="btn-0">Start exercise!</button>
-</form>
+        <div class="input-container">
+            <input id="reps" class="input" type="number" name="exerciseRepsNumber" placeholder="number of reps" required>
+            <label for="reps">number of reps</label>
+        </div>
 
-<div id="container" class="flex-col"></div>
+        <button type="submit" class="btn-0 w-full">Start exercise!</button>
+    </form>
+
+    <div id="container" class="container-sm flex-col"></div>
+
+</div>
+
 
 <script type="module" src="js/main.js" async></script>
