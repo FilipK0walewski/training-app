@@ -44,6 +44,12 @@ function notFoundView()
     renderView('404', $data);
 }
 
+function ServerErro()
+{
+    $data = ['pageTitle' => 'Internal server error'];
+    renderView('500', $data);
+}
+
 function profileView()
 {
     if (!isset($_SESSION['userId'])) {
