@@ -1,6 +1,9 @@
 # Use the official PHP image with Apache
 FROM php:8.3-apache
 
+# 
+RUN apt-get update && apt-get install -y libpq-dev && docker-php-ext-install pgsql pdo_pgsql
+
 # Enable Apache mod_rewrite (if needed)
 RUN a2enmod rewrite
 
