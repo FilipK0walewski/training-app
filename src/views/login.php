@@ -11,15 +11,15 @@
 
 <div class="flex-center">
 
-    <form action="/login" method="POST" class="flex-col form-0">
+    <form action="/login" method="POST" class="flex-col form-0" autocomplete="off">
 
         <div class="input-container">
-            <input id="username" name="username" type="text" placeholder="username" require>
+            <input id="username" name="username" type="text" placeholder="username" required>
             <label for="username">username</label>
         </div>
 
         <div class="input-container">
-            <input id="password" name="password" type="password" placeholder="password" require>
+            <input id="password" name="password" type="password" placeholder="password" required>
             <label for="password">password</label>
         </div>
 

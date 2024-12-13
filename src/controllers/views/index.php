@@ -28,11 +28,14 @@ function loginView()
         exit();
     }
 
-    $previousPage = parse_url($_SERVER['HTTP_REFERER'])['path'];
-    if (strlen(trim($previousPage)) == 0) $previousPage = '/';
-    if ($previousPage != '/register' && $previousPage != '/login') {
-        $_SESSION['previousPage'] = $previousPage;
+    if (isset($_SERVER['HTTP_REFERER'])) {
+        $previousPage = parse_url($_SERVER['HTTP_REFERER'])['path'];
+        if (strlen(trim($previousPage)) == 0) $previousPage = '/';
+        if ($previousPage != '/register' && $previousPage != '/login') {
+            $_SESSION['previousPage'] = $previousPage;
+        }
     }
+
 
     $data = ['pageTitle' => 'Sign in'];
     renderView('login', $data);
