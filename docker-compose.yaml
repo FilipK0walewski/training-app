@@ -25,22 +25,24 @@ services:
     networks:
       - traefik-network
       - training-network
-    # ports:
-    #   - "8000:80"
+    ports:
+      - "8000:80"
     volumes:
       - ./src:/var/www/html
     restart: unless-stopped
   db:
     container_name: training-db
-    image: postgres:latest-alpine
+    image: postgres:alpine
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
+    networks:
+      - training-network
+    restart: unless-stopped
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
-    restart: unless-stopped
 
 volumes:
   db_data:
