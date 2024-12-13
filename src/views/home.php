@@ -17,7 +17,6 @@ if (isset($message)) {
 </p>
 
 <?php
-session_start();
 if (!isset($_SESSION['userId'])) {
 ?>
 

@@ -8,7 +8,7 @@
 
 <div class="flex-center">
 
-    <form action="/register" method="POST" class="flex-col form-0">
+    <form action="/register" method="POST" class="flex-col form-0" autocomplete="off">
         <div class="input-container">
             <input id="username" name="username" type="text" placeholder="" required>
             <label for="username">username</label>
