@@ -37,7 +37,7 @@ function addWorkout()
 
         foreach ($data['exercises'] as $exercise) {
             $sets = $exercise['sets'];
-            $isFailed = !array_filter($sets, fn($set) => $set['isFailed'] === true) ? 1 : 0;
+            $isFailed = !array_filter($sets, fn($set) => $set['failed'] === true) ? 1 : 0;
             $exerciseResult = pg_query_params($conn, $exerciseQuery, array($workoutId, $exercise['name'], $exercise['weight'], $exercise['numberOfReps'], $exercise['numberOfSets'], $isFailed));
             $exerciseId = pg_fetch_assoc($exerciseResult)['id'];
 

@@ -1,27 +1,48 @@
+networks:
+  traefik-network:
+    external: true
+  training-network:
+
 services:
   web:
     build:
       context: .
     container_name: training-app
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_DB: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    depends_on:
+      - db
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.training-app.rule=Host(`training.filipkowalewski.com`) || Host(`www.training.filipkowalewski.com`)"
+      - "traefik.http.routers.training-app.entrypoints=websecure"
+      - "traefik.http.routers.training-app.tls.certresolver=myresolver"
+    networks:
+      - traefik-network
+      - training-network
     ports:
       - "8000:80"
     volumes:
       - ./src:/var/www/html
-    depends_on:
-      - db
-    restart: always
-
+    restart: unless-stopped
   db:
-    image: postgres:latest-alpine
     container_name: training-db
+    image: postgres:alpine
     environment:
-      POSTGRES_DB: db  # Database name
-      POSTGRES_USER: user  # Database user
-      POSTGRES_PASSWORD: password  # Database password
+      POSTGRES_DB: db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    networks:
+      - training-network
+    restart: unless-stopped
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  
-    restart: always
 
 volumes:
   db_data:

@@ -190,16 +190,14 @@ const resetWorkout = () => {
 }
 
 const displayLoginMessage = () => {
-    const div = document.createElement('div')
-    div.displayssList.add('flex-col')
     const p = document.createElement('p')
     p.textContent = 'In order to save your workouts you need to be signed in.'
+    p.classList.add('text-center')
     const a = document.createElement('a')
     a.textContent = 'sign in'
     a.href = '/login'
-    div.appendChild(p)
-    div.appendChild(a)
-    container.appendChild(div)
+    container.appendChild(p)
+    container.appendChild(a)
 }
 
 const displaySaveSuccessMessage = (workoutId) => {
@@ -244,6 +242,7 @@ const saveWorkoutToServer = () => {
             localStorage.removeItem('workout')
             workout = new Workout()
         }).catch(error => {
+            console.log(error.message)
             if (error.message === 'Unauthorized') {
                 displayLoginMessage()
             } else {

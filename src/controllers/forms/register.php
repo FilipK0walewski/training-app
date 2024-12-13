@@ -5,10 +5,6 @@ function registerForm()
 {
     global $conn;
 
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        return renderRegisterPage();
-    }
-
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
     $password = isset($_POST['password']) ? $_POST['password'] : '';
     $confirmedPassword = isset($_POST['confirmedPassword']) ? $_POST['confirmedPassword'] : '';
@@ -34,7 +30,6 @@ function registerForm()
     $result = pg_query_params($conn, $query, array($username, $hashed_password));
 
     if ($result) {
-        session_start();
         $_SESSION['newUser'] = $username;
         header('Location: /login');
         exit();
